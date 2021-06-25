@@ -8,25 +8,6 @@ import (
 	"time"
 )
 
-// Data structure to store contact data
-type Contact struct {
-	Id           int
-	FullName     string
-	Email        string
-	PhoneNumbers []string
-}
-
-func init() {
-	c1 := Contact{
-		Id:       1,
-		FullName: "Bob Smith",
-		Email:    "bob@acme.com",
-	}
-	c1.PhoneNumbers = append(c1.PhoneNumbers, "123")
-
-	fmt.Printf("%+v\n", c1)
-}
-
 // Entry point for the program
 func main() {
 	// add handler function
@@ -40,7 +21,7 @@ func main() {
 
 // Callback function which is called upon receiving a HTTP request
 func contactHandler(w http.ResponseWriter, r *http.Request) {
-	var res string
+	var res []byte
 	var err error
 
 	start := time.Now()
@@ -51,7 +32,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 	// dispatch http method to correct function
 	switch r.Method {
 	case "GET":
-		res, err = getContacts(w)
+		res, err = getContacts()
 
 	case "POST":
 		// try and read body
@@ -61,7 +42,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error reading body.", http.StatusBadRequest)
 			return
 		}
-		res, err = addContact(w, body)
+		res, err = addContact(body)
 
 	default:
 		msg := "Unhandled method: " + r.Method
@@ -71,7 +52,6 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 	// send response
 	if err != nil {
-		//
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -79,12 +59,4 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 
 	message := fmt.Sprintf("Sent success response to %s, processing time: %s", r.RemoteAddr, time.Since(start))
 	log.Println(message)
-}
-
-func getContacts(w http.ResponseWriter) (string, error) {
-	return "getContacts", nil
-}
-
-func addContact(w http.ResponseWriter, body []byte) (string, error) {
-	return "addContact", nil
 }
