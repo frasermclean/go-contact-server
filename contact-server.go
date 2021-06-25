@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -28,7 +29,7 @@ func init() {
 // Entry point for the program
 func main() {
 	// add handler function
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/contact", contactHandler)
 
 	// specify address and start listening
 	addr := "127.0.0.1:8080"
@@ -37,12 +38,49 @@ func main() {
 }
 
 // Callback function which is called upon receiving a HTTP request
-func handler(w http.ResponseWriter, r *http.Request) {
-	message := "Welcome to Contact Server: %s"
-	fmt.Fprintf(w, message, r.Method)
+func contactHandler(w http.ResponseWriter, r *http.Request) {
+	var res string
+	var err error
+
+	// dispatch http method to correct function
+	switch r.Method {
+	case "GET":
+		res, err = getContacts(w)
+
+	case "POST":
+		// try and read body
+		body, ioError := ioutil.ReadAll(r.Body)
+		if ioError != nil {
+			log.Printf("Error reading body: %v", ioError)
+			http.Error(w, "Error reading body.", http.StatusBadRequest)
+			return
+		}
+		res, err = addContact(w, body)
+
+	default:
+		msg := "Unhandled method: " + r.Method
+		http.Error(w, msg, http.StatusBadRequest)
+		return
+	}
+
+	// send response
+	if err != nil {
+		//
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprint(w, res)
 }
 
-// Save the specfied contact to disk
+func getContacts(w http.ResponseWriter) (string, error) {
+	return "getContacts", nil
+}
+
+func addContact(w http.ResponseWriter, body []byte) (string, error) {
+	return "addContact", nil
+}
+
+// Save the specified contact to disk
 func (c *Contact) save() error {
 	return nil
 }
