@@ -38,6 +38,7 @@ func init() {
 	fmt.Printf("%+v\n", contacts)
 }
 
+// Returns a JSON serlialized string of all the current contacts
 func getContacts() ([]byte, error) {
 	bytes, err := json.Marshal(contacts)
 	if err != nil {
@@ -48,6 +49,7 @@ func getContacts() ([]byte, error) {
 	return bytes, nil
 }
 
+// Add a new contact using the body as data values
 func addContact(body []byte) ([]byte, error) {
 	fmt.Printf("body: %v\n", body)
 	err := errors.New("not implemented")
