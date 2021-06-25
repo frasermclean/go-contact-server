@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 // Data structure to store contact data
@@ -42,6 +43,8 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 	var res string
 	var err error
 
+	start := time.Now()
+
 	// output logging message
 	log.Println(fmt.Sprintf("Client %s request received from %s", r.Method, r.RemoteAddr))
 
@@ -73,7 +76,9 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprint(w, res)
-	log.Println(fmt.Sprintf("Sent success response to %s", r.RemoteAddr))
+
+	message := fmt.Sprintf("Sent success response to %s, processing time: %s", r.RemoteAddr, time.Since(start))
+	log.Println(message)
 }
 
 func getContacts(w http.ResponseWriter) (string, error) {
