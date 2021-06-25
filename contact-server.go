@@ -79,8 +79,3 @@ func getContacts(w http.ResponseWriter) (string, error) {
 func addContact(w http.ResponseWriter, body []byte) (string, error) {
 	return "addContact", nil
 }
-
-// Save the specified contact to disk
-func (c *Contact) save() error {
-	return nil
-}
