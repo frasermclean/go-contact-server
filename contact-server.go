@@ -42,6 +42,9 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 	var res string
 	var err error
 
+	// output logging message
+	log.Println(fmt.Sprintf("Client %s request received from %s", r.Method, r.RemoteAddr))
+
 	// dispatch http method to correct function
 	switch r.Method {
 	case "GET":
@@ -70,6 +73,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprint(w, res)
+	log.Println(fmt.Sprintf("Sent success response to %s", r.RemoteAddr))
 }
 
 func getContacts(w http.ResponseWriter) (string, error) {
