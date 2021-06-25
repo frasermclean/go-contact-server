@@ -12,6 +12,7 @@ func main() {
 
 	// specify address and start listening
 	addr := "127.0.0.1:8080"
+	log.Printf("Attempting to listen on: %s", addr)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
