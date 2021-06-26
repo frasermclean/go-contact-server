@@ -50,11 +50,14 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// send response
+	// check for error
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// send success response
+	w.Header().Add("Content-Type", "application/json")
 	fmt.Fprint(w, res)
 
 	message := fmt.Sprintf("Sent success response to %s, processing time: %s", r.RemoteAddr, time.Since(start))
