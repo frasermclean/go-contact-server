@@ -39,19 +39,20 @@ func init() {
 }
 
 // Returns a JSON serlialized string of all the current contacts
-func getContacts() ([]byte, error) {
-	bytes, err := json.Marshal(contacts)
+func getContacts() (string, error) {
+	b, err := json.Marshal(contacts)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return "", err
 	}
 
-	return bytes, nil
+	s := string(b)
+	return s, nil
 }
 
 // Add a new contact using the body as data values
-func addContact(body []byte) ([]byte, error) {
+func addContact(body []byte) (string, error) {
 	fmt.Printf("body: %v\n", body)
 	err := errors.New("not implemented")
-	return nil, err
+	return "", err
 }

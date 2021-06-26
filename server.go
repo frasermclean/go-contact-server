@@ -21,7 +21,7 @@ func main() {
 
 // Callback function which is called upon receiving a HTTP request
 func contactHandler(w http.ResponseWriter, r *http.Request) {
-	var res []byte
+	var res string
 	var err error
 
 	start := time.Now()
