@@ -18,24 +18,27 @@ type Contact struct {
 var contacts []Contact
 
 func init() {
+	seedData()
+}
 
+// Adds sample contact data
+func seedData() {
 	bob := Contact{
 		Id:       1,
 		FullName: "Bob Smith",
 		Email:    "bob@acme.com",
 	}
-	bob.PhoneNumbers = append(bob.PhoneNumbers, "123")
+	bob.PhoneNumbers = append(bob.PhoneNumbers, "0432 556 213")
+	bob.PhoneNumbers = append(bob.PhoneNumbers, "03 3455 1235")
 
 	mary := Contact{
 		Id:       2,
 		FullName: "Mary Smith",
 		Email:    "mary@acme.com",
 	}
-	mary.PhoneNumbers = append(mary.PhoneNumbers, "456")
+	mary.PhoneNumbers = append(mary.PhoneNumbers, "0412 234 890")
 
 	contacts = append(contacts, bob, mary)
-
-	fmt.Printf("%+v\n", contacts)
 }
 
 // Returns a JSON serlialized string of all the current contacts
