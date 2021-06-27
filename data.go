@@ -29,14 +29,14 @@ func addSeedData() {
 	}
 	bob.PhoneNumbers = append(bob.PhoneNumbers, "0432 556 213")
 	bob.PhoneNumbers = append(bob.PhoneNumbers, "03 3455 1235")
+	storeContact(bob)
 
 	mary := Contact{
 		FullName: "Mary Smith",
 		Email:    "mary@acme.com",
 	}
 	mary.PhoneNumbers = append(mary.PhoneNumbers, "0412 234 890")
-
-	contacts = append(contacts, bob, mary)
+	storeContact(mary)
 }
 
 // Returns a JSON serlialized string of all the current contacts
@@ -71,9 +71,14 @@ func addContact(body []byte) error {
 	}
 
 	// add new contact to existing contacts
-	contacts = append(contacts, contact)
-	log.Printf("Contact added: %v", contact)
+	storeContact(contact)
 	return nil
+}
+
+// Store a contact in the database
+func storeContact(c Contact) {
+	contacts = append(contacts, c)
+	log.Printf("Contact added: %v", c)
 }
 
 // Tests that the specified contact is valid
