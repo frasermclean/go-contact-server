@@ -9,10 +9,10 @@ import (
 
 // Data structure to store contact data
 type Contact struct {
-	Id           int
-	FullName     string
-	Email        string
-	PhoneNumbers []string
+	Id           int      `json:"id"`
+	FullName     string   `json:"full_name"`
+	Email        string   `json:"email"`
+	PhoneNumbers []string `json:"phone_numbers"`
 }
 
 var contacts []Contact
