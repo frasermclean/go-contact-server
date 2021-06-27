@@ -39,3 +39,11 @@ Send a HTTP POST request to the server address with JSON formatted contact data 
   ]
 }
 ```
+
+## Outstanding Items
+
+[*] Return array of contacts
+[*] Ability to add new contact
+[*] Validate contact data
+[ ] Persist Data to Database
+[ ] HTML front end
