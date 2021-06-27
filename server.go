@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -45,14 +46,12 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 		err = addContact(body)
 
 	default:
-		msg := "Unhandled method: " + r.Method
-		http.Error(w, msg, http.StatusBadRequest)
-		return
+		err = errors.New("Unhandled method: " + r.Method)
 	}
 
 	// check for error
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
