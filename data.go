@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 )
@@ -45,7 +44,7 @@ func seedData() {
 func getContacts() (string, error) {
 	b, err := json.Marshal(contacts)
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 		return "", err
 	}
 
@@ -54,8 +53,20 @@ func getContacts() (string, error) {
 }
 
 // Add a new contact using the body as data values
-func addContact(body []byte) (string, error) {
-	fmt.Printf("body: %v\n", body)
-	err := errors.New("not implemented")
-	return "", err
+func addContact(body []byte) error {
+
+	// deserialize body into new contact
+	contact := Contact{}
+	err := json.Unmarshal(body, &contact)
+
+	// chech for error
+	if err != nil {
+		log.Println(err.Error())
+		return err
+	}
+
+	// add new contact to existing contacts
+	contacts = append(contacts, contact)
+	fmt.Printf("contact added: %v\n", contact)
+	return nil
 }

@@ -42,7 +42,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Error reading body.", http.StatusBadRequest)
 			return
 		}
-		res, err = addContact(body)
+		err = addContact(body)
 
 	default:
 		msg := "Unhandled method: " + r.Method
@@ -56,9 +56,11 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// send success response
-	w.Header().Add("Content-Type", "application/json")
-	fmt.Fprint(w, res)
+	// set response body
+	if res != "" {
+		w.Header().Add("Content-Type", "application/json")
+		fmt.Fprint(w, res)
+	}
 
 	message := fmt.Sprintf("Sent success response to %s, processing time: %s", r.RemoteAddr, time.Since(start))
 	log.Println(message)
