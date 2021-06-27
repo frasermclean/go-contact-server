@@ -94,8 +94,9 @@ func isValidContact(contact *Contact) error {
 	}
 
 	// test phone numbers
+	numberRegexp := regexp.MustCompile(`^((\+61\s?)?(\((0|02|03|04|07|08)\))?)?\s?\d{1,4}\s?\d{1,4}\s?\d{0,4}$`)
 	for _, number := range contact.PhoneNumbers {
-		validNumber, _ := regexp.MatchString(`^((\+61\s?)?(\((0|02|03|04|07|08)\))?)?\s?\d{1,4}\s?\d{1,4}\s?\d{0,4}$`, number)
+		validNumber := numberRegexp.Match([]byte(number))
 		if !validNumber {
 			return errors.New("error detected in phone number: " + number)
 		}
