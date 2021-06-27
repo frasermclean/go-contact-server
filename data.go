@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 )
 
@@ -67,6 +66,6 @@ func addContact(body []byte) error {
 
 	// add new contact to existing contacts
 	contacts = append(contacts, contact)
-	fmt.Printf("contact added: %v\n", contact)
+	log.Printf("Contact added: %v", contact)
 	return nil
 }
