@@ -10,7 +10,6 @@ import (
 
 // Data structure to store contact data
 type Contact struct {
-	Id           int      `json:"id"`
 	FullName     string   `json:"full_name"`
 	Email        string   `json:"email"`
 	PhoneNumbers []string `json:"phone_numbers"`
@@ -19,13 +18,12 @@ type Contact struct {
 var contacts []Contact
 
 func init() {
-	seedData()
+	addSeedData()
 }
 
 // Adds sample contact data
-func seedData() {
+func addSeedData() {
 	bob := Contact{
-		Id:       1,
 		FullName: "Bob Smith",
 		Email:    "bob@acme.com",
 	}
@@ -33,7 +31,6 @@ func seedData() {
 	bob.PhoneNumbers = append(bob.PhoneNumbers, "03 3455 1235")
 
 	mary := Contact{
-		Id:       2,
 		FullName: "Mary Smith",
 		Email:    "mary@acme.com",
 	}
