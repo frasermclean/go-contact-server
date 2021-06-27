@@ -2,7 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
+	"net/mail"
+	"regexp"
 )
 
 // Data structure to store contact data
@@ -56,16 +59,47 @@ func addContact(body []byte) error {
 
 	// deserialize body into new contact
 	contact := Contact{}
-	err := json.Unmarshal(body, &contact)
+	jsonErr := json.Unmarshal(body, &contact)
 
 	// chech for error
-	if err != nil {
-		log.Println(err.Error())
-		return err
+	if jsonErr != nil {
+		log.Println(jsonErr.Error())
+		return jsonErr
+	}
+
+	// validate new contact
+	validErr := isValidContact(&contact)
+	if validErr != nil {
+		return validErr
 	}
 
 	// add new contact to existing contacts
 	contacts = append(contacts, contact)
 	log.Printf("Contact added: %v", contact)
+	return nil
+}
+
+// Tests that the specified contact is valid
+func isValidContact(contact *Contact) error {
+	// test full name
+	validFullName, _ := regexp.MatchString(`^[A-z ]+$`, contact.FullName)
+	if !validFullName {
+		return errors.New("error detected in full name: " + contact.FullName)
+	}
+
+	// test email
+	_, mailErr := mail.ParseAddress(contact.Email)
+	if mailErr != nil {
+		return errors.New("error detected in email: " + contact.Email)
+	}
+
+	// test phone numbers
+	for _, number := range contact.PhoneNumbers {
+		validNumber, _ := regexp.MatchString(`^((\+61\s?)?(\((0|02|03|04|07|08)\))?)?\s?\d{1,4}\s?\d{1,4}\s?\d{0,4}$`, number)
+		if !validNumber {
+			return errors.New("error detected in phone number: " + number)
+		}
+	}
+
 	return nil
 }
